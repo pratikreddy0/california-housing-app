@@ -1,0 +1,8 @@
+2024-12-23 15:34:03,747 - INFO - Streamlit application started.
+2024-12-23 15:37:03,753 - INFO - Streamlit application started.
+2024-12-23 15:37:03,764 - INFO - Dataset loaded successfully from F:\california_housing_app\data\housing.csv.
+2024-12-23 15:37:04,832 - INFO - Data preprocessing completed successfully.
+2024-12-23 15:37:36,686 - INFO - Model trained and saved at F:\california_housing_app\model\housing_price_model.joblib.
+2024-12-23 15:37:36,874 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2024-12-23 15:37:36,874 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2024-12-23 15:37:36,894 - INFO - Prediction made for user input: [[-122.23   37.88   30.    500.    300.   1000.    400.      3.5     3.  ]], Predicted Value: $199,646.00
