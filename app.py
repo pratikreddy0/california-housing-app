@@ -13,11 +13,12 @@ import joblib  # For saving and loading models
 import os  # To check file paths
 import logging  # For logging actions
 
-# Set file paths relative to the Docker container
-data_path = "/app/data/housing.csv"
-model_path = "/app/model/housing_price_model.joblib"
-metrics_path = "/app/model_metrics/model_metrics.txt"
-log_path = "/app/logs/model_training.log"
+# Set file paths 
+base_dir = os.path.dirname(__file__)  # Gets the directory of the current file
+data_path = os.path.join(base_dir, "data", "housing.csv")
+model_path = os.path.join(base_dir, "model", "housing_price_model.joblib")
+metrics_path = os.path.join(base_dir, "model_metrics", "model_metrics.txt")
+log_path = os.path.join(base_dir, "logs", "model_training.log")
 
 # Page configuration
 st.set_page_config(
