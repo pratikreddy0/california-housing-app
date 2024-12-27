@@ -1,58 +1,48 @@
-import os
-import sys
 import pytest
+import pandas as pd
+from your_app import load_data, preprocess_data, train_model_if_needed
+from sklearn.ensemble import RandomForestRegressor
+import joblib
 
-# Add the project root to the system path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from app import load_data, preprocess_data, load_model, train_model_if_needed
-
-def get_absolute_path(relative_path):
-    """Get the absolute path for a file relative to this script."""
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', relative_path))
-
-@pytest.fixture
-def sample_data_file():
-    return get_absolute_path('data/housing.csv')
-
-@pytest.fixture
-def sample_model_file():
-    return get_absolute_path('model/housing_price_model.joblib')
-
-@pytest.fixture
-def sample_save_path():
-    return get_absolute_path('model/trained_housing_price_model.joblib')
+# Path to the dataset and model for testing
+sample_data_file = 'path/to/your/housing.csv'
+sample_save_path = 'path/to/your/trained_housing_price_model.joblib'
 
 def test_load_data(sample_data_file):
-    """Test loading data from the CSV file."""
+    """Test loading of the data."""
     data = load_data(sample_data_file)
-    assert data is not None, "Data loading failed."
-    assert len(data) > 0, "Loaded data is empty."
+    assert isinstance(data, pd.DataFrame), "Data should be loaded as a DataFrame"
+    assert 'median_house_value' in data.columns, "'median_house_value' column not found in data"
 
 def test_preprocess_data(sample_data_file):
     """Test data preprocessing."""
     data = load_data(sample_data_file)
-    X, y, feature_columns, le, imputer = preprocess_data(data)  # Unpack all 5 returned values
-    assert X is not None and y is not None, "Preprocessing failed."
-    assert len(X) > 0 and len(y) > 0, "Preprocessed data is empty."
-
-def test_load_model(sample_model_file):
-    """Test loading the model."""
-    model = load_model(sample_model_file)
-    assert model is not None, "Model loading failed."
+    X, feature_columns, le, imputer = preprocess_data(data)  # Now unpack only 4 values
+    assert X.shape[0] == data.shape[0], "Number of rows should be the same after preprocessing"
+    assert len(feature_columns) > 0, "Feature columns should not be empty"
+    assert isinstance(le, LabelEncoder), "LabelEncoder object should be returned"
+    assert isinstance(imputer, SimpleImputer), "SimpleImputer object should be returned"
 
 def test_train_model_if_needed(sample_data_file, sample_save_path):
-    """
-    Test the train_model_if_needed function.
-    It verifies that the model is trained and saved correctly.
-    """
-    # Load and preprocess data
+    """Test the train_model_if_needed function."""
     data = load_data(sample_data_file)
-    X, y, feature_columns, le, imputer = preprocess_data(data)  # Unpack all 5 returned values
+    X = data.drop('median_house_value', axis=1)
+    y = data['median_house_value']
+
+    # Preprocess the data
+    X_processed, feature_columns, le, imputer = preprocess_data(X)
     
-    # Train the model
-    model = train_model_if_needed(X, y, sample_save_path)
-    
-    # Assertions
-    assert model is not None, "Training failed."
-    assert os.path.exists(sample_save_path), "Model save path does not exist."
+    # Train model only if it doesn't exist
+    model = train_model_if_needed(X_processed, y, sample_save_path)
+
+    # Assert that the model is an instance of RandomForestRegressor
+    assert isinstance(model, RandomForestRegressor), "Trained model should be a RandomForestRegressor"
+
+    # Check if the model file was saved
+    assert joblib.load(sample_save_path) is not None, "Model file was not saved"
+
+def test_load_model(sample_save_path):
+    """Test loading of the saved model."""
+    model = joblib.load(sample_save_path)
+    assert model is not None, "Model should be loaded successfully"
+    assert isinstance(model, RandomForestRegressor), "Loaded model should be a RandomForestRegressor"
