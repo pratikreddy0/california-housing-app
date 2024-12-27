@@ -10,50 +10,58 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Or use another runner, depending on your setup
-    
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
     steps:
-    # Checkout code (with LFS support)
+    # Checkout code and LFS files
     - name: Checkout repository
-      uses: actions/checkout@v3  # Use the latest version of actions/checkout
+      uses: actions/checkout@v3
       with:
-        lfs: true  # Ensure Git LFS files are downloaded
+        lfs: true  # Ensure LFS files are downloaded
 
     # Set up Python environment
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12'  # Update this to the correct Python version you're using
+        python-version: '3.12'  # Ensure correct Python version
 
     # Install dependencies
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
 
-    # Pull LFS files (make sure they're available)
-    - name: Set up Git LFS
-      run: git lfs pull  # Pull all LFS files during the CI run
-
-    # Check if LFS files are available
-    - name: Check pulled files
+    # Verify files exist
+    - name: Debug file paths
       run: |
-        # Print the current working directory
-        echo "Current working directory: $(pwd)"
-        
-        # List files recursively to confirm the paths
+        echo "Working Directory: $(pwd)"
+        echo "Listing all files:"
         ls -R
+        echo "Checking data directory:"
+        if [ -d "data" ]; then
+          echo "Data directory exists"
+        else
+          echo "Data directory missing"
+        fi
+        echo "Checking data/housing.csv:"
+        if [ -f "data/housing.csv" ]; then
+          echo "Housing CSV exists"
+        else
+          echo "Housing CSV missing"
+        fi
+        echo "Checking model directory:"
+        if [ -d "model" ]; then
+          echo "Model directory exists"
+        else
+          echo "Model directory missing"
+        fi
+        echo "Checking model/housing_price_model.joblib:"
+        if [ -f "model/housing_price_model.joblib" ]; then
+          echo "Model file exists"
+        else
+          echo "Model file missing"
+        fi
 
-        # Check if housing.csv is accessible
-        echo "Checking data/housing.csv"
-        cat data/housing.csv || echo "housing.csv not found"
-        
-        # Check if model directory contains files
-        echo "Checking model directory"
-        ls model/ || echo "Model directory not found"
-
-    # Run the tests
+    # Run tests
     - name: Run tests
       run: |
-        # Ensure you're in the correct directory
-        cd tests  # Change to the tests directory
-        pytest  # Run your tests
+        pytest tests --disable-warnings
