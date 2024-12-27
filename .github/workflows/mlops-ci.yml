@@ -13,51 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-<<<<<<< HEAD
       - name: Checkout code
         uses: actions/checkout@v3
-=======
-      # Step 1: Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v2
->>>>>>> fe11ae7e5bfd364e21dcfb20ad11411d2e961444
 
-      # Step 2: Set up Python environment (Python 3.12)
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-<<<<<<< HEAD
           python-version: '3.12'  # Specify your Python version here
-=======
-          python-version: 3.12  # Updated to Python 3.12 to support all dependencies
->>>>>>> fe11ae7e5bfd364e21dcfb20ad11411d2e961444
 
-      # Step 3: Upgrade pip and Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run tests (ensure `pytest` is configured correctly in your project)
       - name: Run tests
         run: |
-<<<<<<< HEAD
           pytest tests/
-=======
-          pytest tests/  # Adjust if your test files are in a different folder
-
-      # Step 5: Train the model
-      - name: Train model
-        run: |
-          python train.py  # Replace this with the correct path to your training script
-
-      # Step 6: Build and push Docker image (optional, if required)
-      - name: Build and push Docker image
-        run: |
-          docker build -t your-dockerhub-username/housing-price-predictor:latest .
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker push your-dockerhub-username/housing-price-predictor:latest
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
->>>>>>> fe11ae7e5bfd364e21dcfb20ad11411d2e961444
