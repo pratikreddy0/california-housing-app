@@ -1,4 +1,4 @@
-name: Python CI
+name: CI Pipeline
 
 on:
   push:
@@ -9,23 +9,40 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  test:
+    runs-on: ubuntu-latest  # Or use another runner, depending on your setup
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # Checkout code
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        lfs: true  # Ensure Git LFS files are downloaded
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'  # Specify your Python version here
+    # Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'  # Update this to the correct Python version you're using
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
 
-      - name: Run tests
-        run: |
-          pytest tests/
+    # Pull LFS files (make sure they're available)
+    - name: Set up Git LFS
+      run: git lfs pull  # Pull all LFS files during the CI run
+
+    # Check files to confirm Git LFS files are pulled correctly (for debugging)
+    - name: Check pulled files
+      run: |
+        ls -R  # List all files to ensure they exist in the CI environment
+        cat data/housing.csv  # Check if the CSV file is accessible
+        ls model/  # Check if the model files are accessible
+
+    # Run the tests
+    - name: Run tests
+      run: |
+        cd tests  # Ensure you're in the correct directory
+        pytest  # Run your tests
