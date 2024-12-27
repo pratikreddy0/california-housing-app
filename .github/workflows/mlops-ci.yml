@@ -10,10 +10,10 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
-    # Checkout code and LFS files
+    # Checkout code
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
@@ -23,45 +23,24 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12'  # Ensure correct Python version
+        python-version: '3.12'  # Ensure Python version matches your local environment
 
     # Install dependencies
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
 
-    # Verify files exist
-    - name: Debug file paths
+    # Debug paths and check for necessary files
+    - name: Debug paths and file existence
       run: |
-        echo "Working Directory: $(pwd)"
+        echo "Current working directory: $(pwd)"
         echo "Listing all files:"
         ls -R
-        echo "Checking data directory:"
-        if [ -d "data" ]; then
-          echo "Data directory exists"
-        else
-          echo "Data directory missing"
-        fi
-        echo "Checking data/housing.csv:"
-        if [ -f "data/housing.csv" ]; then
-          echo "Housing CSV exists"
-        else
-          echo "Housing CSV missing"
-        fi
-        echo "Checking model directory:"
-        if [ -d "model" ]; then
-          echo "Model directory exists"
-        else
-          echo "Model directory missing"
-        fi
-        echo "Checking model/housing_price_model.joblib:"
-        if [ -f "model/housing_price_model.joblib" ]; then
-          echo "Model file exists"
-        else
-          echo "Model file missing"
-        fi
+        echo "Checking if data file exists:"
+        test -f data/housing.csv && echo "data/housing.csv exists" || echo "data/housing.csv is missing"
+        echo "Checking if model file exists:"
+        test -f model/housing_price_model.joblib && echo "model/housing_price_model.joblib exists" || echo "model file is missing"
 
     # Run tests
     - name: Run tests
-      run: |
-        pytest tests --disable-warnings
+      run: pytest tests --disable-warnings
