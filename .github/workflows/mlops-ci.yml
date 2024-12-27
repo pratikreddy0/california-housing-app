@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest  # Or use another runner, depending on your setup
     
     steps:
-    # Checkout code
+    # Checkout code (with LFS support)
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3  # Use the latest version of actions/checkout
       with:
         lfs: true  # Ensure Git LFS files are downloaded
 
@@ -34,15 +34,26 @@ jobs:
     - name: Set up Git LFS
       run: git lfs pull  # Pull all LFS files during the CI run
 
-    # Check files to confirm Git LFS files are pulled correctly (for debugging)
+    # Check if LFS files are available
     - name: Check pulled files
       run: |
-        ls -R  # List all files to ensure they exist in the CI environment
-        cat data/housing.csv  # Check if the CSV file is accessible
-        ls model/  # Check if the model files are accessible
+        # Print the current working directory
+        echo "Current working directory: $(pwd)"
+        
+        # List files recursively to confirm the paths
+        ls -R
+
+        # Check if housing.csv is accessible
+        echo "Checking data/housing.csv"
+        cat data/housing.csv || echo "housing.csv not found"
+        
+        # Check if model directory contains files
+        echo "Checking model directory"
+        ls model/ || echo "Model directory not found"
 
     # Run the tests
     - name: Run tests
       run: |
-        cd tests  # Ensure you're in the correct directory
+        # Ensure you're in the correct directory
+        cd tests  # Change to the tests directory
         pytest  # Run your tests
