@@ -25,6 +25,15 @@ jobs:
       with:
         python-version: '3.12'  # Ensure Python version matches your local environment
 
+    # Cache dependencies (optional for speeding up installs)
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-python-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-python-
+
     # Install dependencies
     - name: Install dependencies
       run: |
