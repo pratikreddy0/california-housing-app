@@ -1,4 +1,4 @@
-name: MLOps CI Pipeline
+name: Python CI
 
 on:
   push:
@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: '3.12'  # Specify your Python version here
 
       - name: Install dependencies
         run: |
@@ -29,12 +29,3 @@ jobs:
       - name: Run tests
         run: |
           pytest tests/
-
-      - name: Train model
-        run: |
-          python train.py  # Replace with the command to train your model
-
-      - name: Push Docker Image (optional)
-        run: |
-          docker build -t your-dockerhub-username/housing-price-predictor:latest .
-          docker push your-dockerhub-username/housing-price-predictor:latest
