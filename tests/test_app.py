@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from your_app import load_data, preprocess_data, train_model_if_needed
+from app import load_data, preprocess_data, train_model_if_needed  # Import from app.py
 from sklearn.ensemble import RandomForestRegressor
 import joblib
 
@@ -17,7 +17,7 @@ def test_load_data(sample_data_file):
 def test_preprocess_data(sample_data_file):
     """Test data preprocessing."""
     data = load_data(sample_data_file)
-    X, feature_columns, le, imputer = preprocess_data(data)  # Now unpack only 4 values
+    X, feature_columns, le, imputer = preprocess_data(data)  # Unpack only 4 values
     assert X.shape[0] == data.shape[0], "Number of rows should be the same after preprocessing"
     assert len(feature_columns) > 0, "Feature columns should not be empty"
     assert isinstance(le, LabelEncoder), "LabelEncoder object should be returned"
