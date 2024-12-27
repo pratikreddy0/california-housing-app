@@ -1,3 +1,8 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
 import pytest
 import pandas as pd
 from app import load_data, preprocess_data, train_model_if_needed  # Import from app.py
