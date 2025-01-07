@@ -105,7 +105,8 @@ def train_model_if_needed(X, y, save_path):
     if not os.path.exists(save_path):  # Check if model already exists
         model = RandomForestRegressor(n_estimators=100, random_state=42)
         model.fit(X, y)
-        joblib.dump(model, save_path)  # Save the trained model
+        # Save the trained model with compression (gzip)
+        joblib.dump(model, save_path, compress=('gzip', 3))  # Gzip compression with level 3
         logging.info(f"Model trained and saved at {save_path}.")
         return model
     else:
@@ -167,14 +168,14 @@ if st.sidebar.button("🚂 Train and Predict"):
     model = train_model_if_needed(X_train, y_train, model_path)
 
     # Calculate RMSE and Confidence Interval
-    predictions = model.predict(X_test)
-    rmse = np.sqrt(mean_squared_error(y_test, predictions))
-    ci = stats.t.interval(0.95, len(predictions)-1, loc=rmse, scale=stats.sem(predictions))
-    save_metrics(metrics_path, rmse, ci)
+    #predictions = model.predict(X_test)
+    #rmse = np.sqrt(mean_squared_error(y_test, predictions))
+    #ci = stats.t.interval(0.95, len(predictions)-1, loc=rmse, scale=stats.sem(predictions))
+    #save_metrics(metrics_path, rmse, ci)
 
-    st.success(f"Final RMSE: {rmse:.2f}")
-    st.info(f"95% Confidence Interval: ({ci[0]:.2f}, {ci[1]:.2f})")
-    logging.info(f"RMSE calculated: {rmse:.2f}, Confidence Interval: {ci}.")
+    #st.success(f"Final RMSE: {rmse:.2f}")
+    #st.info(f"95% Confidence Interval: ({ci[0]:.2f}, {ci[1]:.2f})")
+    #logging.info(f"RMSE calculated: {rmse:.2f}, Confidence Interval: {ci}.")
 
     # Predict user input
     user_data = pd.DataFrame({
