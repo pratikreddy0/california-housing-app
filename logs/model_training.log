@@ -34,3 +34,119 @@
 2025-01-07 23:16:29,275 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
 2025-01-07 23:16:29,278 - INFO - Model loaded successfully from F:\california_housing_app\model\housing_price_model.joblib.
 2025-01-07 23:16:30,964 - INFO - Prediction made for user input: [[-122.23   37.88   61.   1771.    284.   1000.    400.     12.43    2.  ]], Predicted Value: $499,261.99
+2025-01-08 17:57:41,112 - INFO - Streamlit application started.
+2025-01-08 17:59:15,493 - INFO - Streamlit application started.
+2025-01-08 17:59:21,949 - INFO - Streamlit application started.
+2025-01-08 17:59:21,990 - INFO - Dataset loaded successfully from F:\california_housing_app\data\housing.csv.
+2025-01-08 17:59:22,144 - INFO - Data preprocessing completed successfully.
+2025-01-08 17:59:22,158 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 17:59:22,163 - INFO - Model loaded successfully from F:\california_housing_app\model\housing_price_model.joblib.
+2025-01-08 17:59:24,285 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:04:47,663 - INFO - Streamlit application started.
+2025-01-08 18:04:49,765 - INFO - Streamlit application started.
+2025-01-08 18:04:49,843 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:04:49,852 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:04:50,227 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:05:51,589 - INFO - Streamlit application started.
+2025-01-08 18:05:53,661 - INFO - Streamlit application started.
+2025-01-08 18:05:53,732 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:05:53,740 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:05:54,127 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:06:16,643 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2025-01-08 18:06:17,160 - INFO - Prediction made for user input: [[-122.23   37.88   30.    500.    300.   1000.    400.      3.5     3.  ]], Predicted Value: $199,646.00
+2025-01-08 18:14:31,118 - INFO - Streamlit application started.
+2025-01-08 18:14:32,933 - INFO - Streamlit application started.
+2025-01-08 18:14:33,016 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:14:33,024 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:14:33,383 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:14:49,371 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2025-01-08 18:14:49,635 - INFO - Prediction made for user input: [[-122.23   37.88   30.    500.    300.   1000.    400.      3.5     3.  ]], Predicted Value: $199,646.00
+2025-01-08 18:16:26,325 - INFO - Streamlit application started.
+2025-01-08 18:16:29,732 - INFO - Streamlit application started.
+2025-01-08 18:16:29,768 - INFO - Dataset loaded successfully from F:\california_housing_app\data\housing.csv.
+2025-01-08 18:16:29,944 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:16:29,961 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:16:29,961 - INFO - Model loaded successfully from F:\california_housing_app\model\housing_price_model.joblib.
+2025-01-08 18:16:31,790 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:16:48,706 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2025-01-08 18:16:48,991 - INFO - Prediction made for user input: [[-122.23   37.88   30.    500.    300.   1000.    400.      3.5     3.  ]], Predicted Value: $199,646.00
+2025-01-08 18:24:10,691 - INFO - Streamlit application started.
+2025-01-08 18:24:17,614 - INFO - Streamlit application started.
+2025-01-08 18:24:17,656 - INFO - Dataset loaded successfully from F:\california_housing_app\data\housing.csv.
+2025-01-08 18:24:17,806 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:24:17,814 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:24:17,823 - INFO - Model loaded successfully from F:\california_housing_app\model\housing_price_model.joblib.
+2025-01-08 18:38:11,256 - INFO - Streamlit application started.
+2025-01-08 18:38:13,261 - INFO - Streamlit application started.
+2025-01-08 18:38:13,345 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:38:13,362 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:39:54,496 - INFO - Streamlit application started.
+2025-01-08 18:39:56,545 - INFO - Streamlit application started.
+2025-01-08 18:39:56,629 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:39:56,646 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:39:57,019 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:41:02,868 - INFO - Streamlit application started.
+2025-01-08 18:41:06,532 - INFO - Streamlit application started.
+2025-01-08 18:41:06,616 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:41:06,623 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:41:07,041 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:42:56,144 - INFO - Streamlit application started.
+2025-01-08 18:44:07,031 - INFO - Streamlit application started.
+2025-01-08 18:44:07,068 - INFO - Dataset loaded successfully from F:\california_housing_app\data\housing.csv.
+2025-01-08 18:44:07,227 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:44:07,245 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:44:07,247 - INFO - Model loaded successfully from F:\california_housing_app\model\housing_price_model.joblib.
+2025-01-08 18:44:09,072 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:47:50,745 - INFO - Streamlit application started.
+2025-01-08 18:47:52,321 - INFO - Streamlit application started.
+2025-01-08 18:47:52,412 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:47:52,424 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:47:52,827 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:54:59,538 - INFO - Streamlit application started.
+2025-01-08 18:55:03,289 - INFO - Streamlit application started.
+2025-01-08 18:55:03,385 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:55:03,399 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:55:03,825 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:55:27,536 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2025-01-08 18:55:27,859 - INFO - Prediction for input    longitude  latitude  housing_median_age  total_rooms  total_bedrooms  population  households  median_income  ocean_proximity
+0    -122.23     37.88                  30          500             300        1000         400            3.5                3: $199,646.00
+2025-01-08 18:58:41,933 - INFO - Streamlit application started.
+2025-01-08 18:58:50,044 - INFO - Streamlit application started.
+2025-01-08 18:58:50,557 - INFO - Streamlit application started.
+2025-01-08 18:58:54,438 - INFO - Streamlit application started.
+2025-01-08 18:58:56,005 - INFO - Streamlit application started.
+2025-01-08 18:58:56,474 - INFO - Streamlit application started.
+2025-01-08 18:59:01,570 - INFO - Streamlit application started.
+2025-01-08 18:59:03,023 - INFO - Streamlit application started.
+2025-01-08 18:59:03,105 - INFO - Data preprocessing completed successfully.
+2025-01-08 18:59:03,116 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-08 18:59:03,475 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-08 18:59:19,779 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2025-01-08 18:59:20,054 - INFO - Prediction for input    longitude  latitude  housing_median_age  total_rooms  total_bedrooms  population  households  median_income  ocean_proximity
+0    -122.23     37.88                  30         3541             815        1630         400           15.0                4: $498,546.98
+2025-01-09 15:08:27,841 - INFO - Streamlit application started.
+2025-01-09 15:08:36,130 - INFO - Streamlit application started.
+2025-01-09 15:08:37,370 - INFO - Streamlit application started.
+2025-01-09 15:08:38,585 - INFO - Streamlit application started.
+2025-01-09 15:08:39,075 - INFO - Streamlit application started.
+2025-01-09 15:08:40,620 - INFO - Streamlit application started.
+2025-01-09 15:08:43,025 - INFO - Streamlit application started.
+2025-01-09 15:08:47,047 - INFO - Streamlit application started.
+2025-01-09 15:08:47,644 - INFO - Streamlit application started.
+2025-01-09 15:08:48,544 - INFO - Streamlit application started.
+2025-01-09 15:08:49,331 - INFO - Streamlit application started.
+2025-01-09 15:08:50,279 - INFO - Streamlit application started.
+2025-01-09 15:08:53,790 - INFO - Streamlit application started.
+2025-01-09 15:08:56,662 - INFO - Streamlit application started.
+2025-01-09 15:08:57,119 - INFO - Streamlit application started.
+2025-01-09 15:08:57,895 - INFO - Streamlit application started.
+2025-01-09 15:09:08,860 - INFO - Streamlit application started.
+2025-01-09 15:09:10,030 - INFO - Streamlit application started.
+2025-01-09 15:09:10,058 - INFO - Dataset loaded successfully from F:\california_housing_app\data\housing.csv.
+2025-01-09 15:09:10,330 - INFO - Data preprocessing completed successfully.
+2025-01-09 15:09:10,346 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-09 15:09:10,365 - INFO - Model loaded successfully from F:\california_housing_app\model\housing_price_model.joblib.
+2025-01-09 15:09:12,171 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-09 15:09:36,715 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2025-01-09 15:09:37,021 - INFO - Prediction for input    longitude  latitude  housing_median_age  total_rooms  total_bedrooms  population  households  median_income  ocean_proximity
+0    -122.23     37.88                  53          500             125       10198         550           1.12                1: $99,787.00

@@ -1,3 +1,5 @@
+import mlflow
+import mlflow.sklearn
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,12 +15,16 @@ import joblib  # For saving and loading models
 import os  # To check file paths
 import logging  # For logging actions
 
-# Set file paths 
+# Set file paths
 base_dir = os.path.dirname(__file__)  # Gets the directory of the current file
 data_path = os.path.join(base_dir, "data", "housing.csv")
 model_path = os.path.join(base_dir, "model", "housing_price_model.joblib")
 metrics_path = os.path.join(base_dir, "model_metrics", "model_metrics.txt")
 log_path = os.path.join(base_dir, "logs", "model_training.log")
+
+# Set the tracking URI to the MLflow server's HTTP endpoint
+mlflow.set_tracking_uri('http://localhost:5000')  # Set to your MLflow server URI
+mlflow.set_experiment('california_housing_experiment')  # Set experiment name
 
 # Page configuration
 st.set_page_config(
@@ -33,7 +39,7 @@ st.set_page_config(
 
 # App title and description
 st.title("California Housing Price Prediction App 🏡")
-st.markdown("""
+st.markdown(""" 
     ### 🏘️ Welcome to the California Housing Price Prediction App
     Use this app to explore data, train the model, and predict housing prices interactively!
 """)
@@ -46,7 +52,7 @@ logging.basicConfig(filename=log_path, level=logging.INFO,
 logging.info("Streamlit application started.")
 
 # Apply custom theme
-st.markdown("""
+st.markdown(""" 
     <style>
         .stApp {
             background-color: #f0f4f7;
@@ -91,11 +97,11 @@ def load_data(filepath):
 def preprocess_data(df):
     le = LabelEncoder()
     imputer = SimpleImputer(strategy="mean")
-    
+
     df['ocean_proximity'] = le.fit_transform(df['ocean_proximity'])
     df = pd.get_dummies(df)
     feature_columns = list(df.columns)
-    
+
     df = imputer.fit_transform(df)
     logging.info("Data preprocessing completed successfully.")
     return df, feature_columns, le, imputer
@@ -103,15 +109,33 @@ def preprocess_data(df):
 # Train and save the model only if it doesn't exist
 def train_model_if_needed(X, y, save_path):
     if not os.path.exists(save_path):  # Check if model already exists
-        model = RandomForestRegressor(n_estimators=100, random_state=42)
-        model.fit(X, y)
-        # Save the trained model with compression (gzip)
-        joblib.dump(model, save_path, compress=('gzip', 3))  # Gzip compression with level 3
-        logging.info(f"Model trained and saved at {save_path}.")
-        return model
+        # End any active MLflow run before starting a new one
+        mlflow.end_run()
+        
+        # Start a new MLflow experiment run
+        with mlflow.start_run() as run:
+            model = RandomForestRegressor(n_estimators=100, random_state=42)
+            model.fit(X, y)
+
+            # Log parameters (e.g., number of estimators)
+            mlflow.log_param("n_estimators", 100)
+            mlflow.log_param("random_state", 42)
+
+            # Log model
+            mlflow.sklearn.log_model(model, "model")
+
+            # Log metrics (e.g., RMSE after training)
+            predictions = model.predict(X)
+            rmse = np.sqrt(mean_squared_error(y, predictions))
+            mlflow.log_metric("rmse", rmse)
+
+            # Save the trained model with compression (gzip)
+            joblib.dump(model, save_path, compress=('gzip', 3))  # Gzip compression with level 3
+            logging.info(f"Model trained and saved at {save_path}.")
+            return model, run
     else:
         logging.info(f"Model already exists at {save_path}, skipping training.")
-        return load_model(save_path)
+        return load_model(save_path), None  # Skip MLflow logging if model exists
 
 # Load the saved model with caching
 @st.cache_resource
@@ -154,7 +178,7 @@ if st.checkbox("Show Correlation Matrix"):
     st.pyplot(plt)
     logging.info("Correlation matrix displayed.")
 
-# Train and predict
+# Predict user input and log prediction to MLflow
 if st.sidebar.button("🚂 Train and Predict"):
     housing = load_data(data_path)
     X = housing.drop("median_house_value", axis=1)
@@ -165,38 +189,60 @@ if st.sidebar.button("🚂 Train and Predict"):
     X_train, X_test, y_train, y_test = train_test_split(X_processed, y, test_size=0.2, random_state=42)
 
     # Train model only if it doesn't exist
-    model = train_model_if_needed(X_train, y_train, model_path)
+    model, _ = train_model_if_needed(X_train, y_train, model_path)  # Unpack the tuple if necessary
 
     # Calculate RMSE and Confidence Interval
-    #predictions = model.predict(X_test)
-    #rmse = np.sqrt(mean_squared_error(y_test, predictions))
-    #ci = stats.t.interval(0.95, len(predictions)-1, loc=rmse, scale=stats.sem(predictions))
-    #save_metrics(metrics_path, rmse, ci)
+    predictions = model.predict(X_test)
+    rmse = np.sqrt(mean_squared_error(y_test, predictions))
+    ci = stats.t.interval(0.95, len(predictions)-1, loc=rmse, scale=stats.sem(predictions))
+    
+    # Save metrics locally and log them to MLflow in the same run
+    save_metrics(metrics_path, rmse, ci)
 
-    #st.success(f"Final RMSE: {rmse:.2f}")
-    #st.info(f"95% Confidence Interval: ({ci[0]:.2f}, {ci[1]:.2f})")
-    #logging.info(f"RMSE calculated: {rmse:.2f}, Confidence Interval: {ci}.")
+    # Log metrics to MLflow
+    with mlflow.start_run():
+        mlflow.log_metric("RMSE", rmse)
+        mlflow.log_metric("Confidence Interval Lower", ci[0])
+        mlflow.log_metric("Confidence Interval Upper", ci[1])
+        mlflow.sklearn.log_model(model, "model")
+    
+    logging.info(f"RMSE calculated: {rmse:.2f}, Confidence Interval: {ci}.")
 
-    # Predict user input
+    # Log prediction
+    with mlflow.start_run():
+        # Log user input
+        mlflow.log_params({
+            "longitude": longitude,
+            "latitude": latitude,
+            "housing_median_age": housing_median_age,
+            "total_rooms": total_rooms,
+            "total_bedrooms": total_bedrooms,
+            "population": population,
+            "households": households,
+            "median_income": median_income,
+            "ocean_proximity": ocean_proximity
+        })
+
+    # Prepare user data
     user_data = pd.DataFrame({
-        "longitude": [longitude],
-        "latitude": [latitude],
-        "housing_median_age": [housing_median_age],
-        "total_rooms": [total_rooms],
-        "total_bedrooms": [total_bedrooms],
-        "population": [population],
-        "households": [households],
-        "median_income": [median_income],
-        "ocean_proximity": [ocean_proximity]
+    "longitude": [longitude],
+    "latitude": [latitude],
+    "housing_median_age": [housing_median_age],
+    "total_rooms": [total_rooms],
+    "total_bedrooms": [total_bedrooms],
+    "population": [population],
+    "households": [households],
+    "median_income": [median_income],
+    "ocean_proximity": [ocean_proximity]
     })
 
-    # Encode ocean proximity
+    # Preprocess user data using label encoding and imputer
     user_data['ocean_proximity'] = le.transform(user_data['ocean_proximity'])
-    user_data = pd.get_dummies(user_data)
-    user_data = user_data.reindex(columns=feature_columns, fill_value=0)
-    user_data = imputer.transform(user_data)
+    user_data_processed = imputer.transform(user_data)
 
-    # Load model and predict
-    prediction = model.predict(user_data)
-    st.success(f"Predicted Median House Value: ${prediction[0]:,.2f}")
-    logging.info(f"Prediction made for user input: {user_data}, Predicted Value: ${prediction[0]:,.2f}")
+    # Make prediction
+    predicted_price = model.predict(user_data_processed)
+
+    # Display prediction result
+    st.write(f"### Predicted Housing Price: ${predicted_price[0]:,.2f}")
+    logging.info(f"Prediction for input {user_data}: ${predicted_price[0]:,.2f}")
