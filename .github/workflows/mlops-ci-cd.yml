@@ -12,6 +12,24 @@ jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
 
+    services:
+      mlflow:
+        image: python:3.12  # Using official Python image for MLflow container
+        options: --entrypoint "/bin/bash"  # Override entrypoint to bash
+        ports:
+          - "5000:5000"  # Exposing port 5000 for MLflow
+        volumes:
+          - /home/runner/work/mlflow:/mlflow-data  # Mount a volume for MLflow
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000  # Set the URI for MLflow tracking
+        command: |
+          pip install mlflow==2.19.0  # Installing MLflow version
+          mlflow server \  # Start MLflow server
+            --backend-store-uri sqlite:///mlflow.db \  # Use SQLite backend for MLflow
+            --default-artifact-root /mlflow-data/artifacts \  # Artifact storage path
+            --host 0.0.0.0 \  # Bind to all interfaces
+            --port 5000  # Expose on port 5000
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Repository
@@ -51,13 +69,15 @@ jobs:
 
       # Step 7: Build the Docker image
       - name: Build Docker Image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/california-housing-app:latest
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/california-housing-app:latest .
 
-      # Step 8: Deploy the Docker container
+      # Step 8: Push the Docker image to Docker Hub
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/california-housing-app:latest
+
+      # Step 9: Deploy Docker container (optional)
       - name: Deploy Docker Container
         run: |
           docker container stop california-housing-app || true
