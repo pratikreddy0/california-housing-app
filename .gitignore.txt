@@ -1,3 +1,0 @@
-# Ignore MLflow directories
-mlruns/
-artifacts/
