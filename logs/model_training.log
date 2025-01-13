@@ -150,3 +150,13 @@
 2025-01-09 15:09:36,715 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
 2025-01-09 15:09:37,021 - INFO - Prediction for input    longitude  latitude  housing_median_age  total_rooms  total_bedrooms  population  households  median_income  ocean_proximity
 0    -122.23     37.88                  53          500             125       10198         550           1.12                1: $99,787.00
+2025-01-10 12:06:00,007 - INFO - Streamlit application started.
+2025-01-10 12:06:11,089 - INFO - Streamlit application started.
+2025-01-10 12:06:11,137 - INFO - Dataset loaded successfully from F:\california_housing_app\data\housing.csv.
+2025-01-10 12:06:11,520 - INFO - Data preprocessing completed successfully.
+2025-01-10 12:06:11,574 - INFO - Model already exists at F:\california_housing_app\model\housing_price_model.joblib, skipping training.
+2025-01-10 12:06:11,578 - INFO - Model loaded successfully from F:\california_housing_app\model\housing_price_model.joblib.
+2025-01-10 12:06:14,068 - INFO - Model metrics saved to F:\california_housing_app\model_metrics\model_metrics.txt: RMSE=50246.04, CI=(47114.84, 53377.24).
+2025-01-10 12:06:43,402 - INFO - RMSE calculated: 50246.04, Confidence Interval: (47114.83759670988, 53377.23627217838).
+2025-01-10 12:06:43,758 - INFO - Prediction for input    longitude  latitude  housing_median_age  total_rooms  total_bedrooms  population  households  median_income  ocean_proximity
+0    -122.23     37.88                  30          500             300        1000         400            3.5                3: $199,646.00

@@ -12,24 +12,6 @@ jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
 
-    services:
-      mlflow:
-        image: python:3.12  # Using official Python image for MLflow container
-        options: --entrypoint "/bin/bash"  # Override entrypoint to bash
-        ports:
-          - "5000:5000"  # Exposing port 5000 for MLflow
-        volumes:
-          - /home/runner/work/mlflow:/mlflow-data  # Mount a volume for MLflow
-        env:
-          MLFLOW_TRACKING_URI: http://localhost:5000  # Set the URI for MLflow tracking
-        command: |
-          pip install mlflow==2.19.0  # Installing MLflow version
-          mlflow server \  # Start MLflow server
-            --backend-store-uri sqlite:///mlflow.db \  # Use SQLite backend for MLflow
-            --default-artifact-root /mlflow-data/artifacts \  # Artifact storage path
-            --host 0.0.0.0 \  # Bind to all interfaces
-            --port 5000  # Expose on port 5000
-
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Repository
@@ -49,35 +31,37 @@ jobs:
           key: ${{ runner.os }}-python-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-python-
-
       # Step 4: Install dependencies
       - name: Install Python Dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 5: Run tests
+      # Step 5: Ensure MLflow is running
+      - name: Start MLflow server (if needed)
+        run: |
+          nohup mlflow server --host 0.0.0.0 --port 5000 &
+
+      # Step 6: Run tests
       - name: Run Tests
         run: pytest tests --disable-warnings
 
-      # Step 6: Log in to Docker Hub
+      # Step 7: Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 7: Build the Docker image
+      # Step 8: Build the Docker image
       - name: Build Docker Image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/california-housing-app:latest .
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/california-housing-app:latest
 
-      # Step 8: Push the Docker image to Docker Hub
-      - name: Push Docker Image to Docker Hub
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/california-housing-app:latest
-
-      # Step 9: Deploy Docker container (optional)
+      # Step 9: Deploy Docker Container
       - name: Deploy Docker Container
         run: |
           docker container stop california-housing-app || true
